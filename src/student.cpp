@@ -89,22 +89,93 @@ void tutupSemuaTab(CNode*& head) {
 
 // SOAL 1
 bool bukaHalaman(DNode*& head, DNode*& tail, int nomor) {
-    return false;
+    DNode* new_node = new DNode(nomor, nullptr, nullptr);
+
+    if (head == nullptr){
+        head = tail = new_node;
+    } else if (nomor < head->data){
+        new_node->next = head;
+        head->prev = new_node;
+        head = new_node;
+    } else if (nomor > tail->data){
+        tail->next = new_node;
+        new_node->prev = tail;
+        tail = new_node;
+    } else {
+        DNode *temp = head;
+        while (temp->next != nullptr and temp->next->data < nomor){
+            temp = temp->next;
+        }
+        
+        DNode *node_belakang = temp;
+        DNode *node_depan = temp->next;
+        
+        new_node->prev = node_belakang;
+        new_node->next = node_depan;
+        
+        node_belakang->next = new_node;
+        node_depan->prev = new_node;
+    }
+
+    return true;
 }
 
 // SOAL 2
 int riwayatMundur(DNode* tail, int* keluaran) {
-    return 0;
+    int n = 0;
+    for (DNode* p = tail; p != nullptr; p = p->prev) {
+        keluaran[n] = p->data;
+        ++n;
+    }
+    return n;
 }
 
 // SOAL 3
 bool hapusHalaman(DNode*& head, DNode*& tail, int nomor) {
-    return false;
+    DNode *curr = head;
+
+    while (curr != nullptr && curr->data != nomor) {
+        curr = curr->next;
+    }
+
+    if (curr == nullptr) return false;
+
+    if (curr->prev != nullptr) {
+        curr->prev->next = curr->next;
+    } else {
+        head = curr->next;
+    }
+
+    if (curr->next != nullptr) {
+        curr->next->prev = curr->prev;
+    } else {
+        tail = curr->prev;
+    }
+
+    delete curr;
+    return true;
 }
 
 // SOAL 4
 bool bukaTab(CNode*& head, int nomor) {
-    return false;
+    CNode* baru = new CNode{nomor, nullptr};
+
+    if (head == nullptr) {
+        head = baru;
+        baru->next = head;
+        return true;
+    }
+
+    CNode* bantu = head;
+    
+    while (bantu->next != head) {
+        bantu = bantu->next;
+    }
+
+    bantu->next = baru;
+    baru->next = head;
+
+    return true;
 }
 
 // =============================================================================
