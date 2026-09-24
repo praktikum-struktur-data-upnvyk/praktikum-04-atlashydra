@@ -89,21 +89,24 @@ void tutupSemuaTab(CNode*& head) {
 
 // SOAL 1
 bool bukaHalaman(DNode*& head, DNode*& tail, int nomor) {
-    DNode* new_node = new DNode(nomor, nullptr, nullptr);
+    DNode* new_node = new DNode();
+    new_node->data = nomor;
+    new_node->prev = nullptr;
+    new_node->next = nullptr;
 
-    if (head == nullptr){
+    if (head == nullptr) {
         head = tail = new_node;
-    } else if (nomor < head->data){
+    } else if (nomor < head->data) {
         new_node->next = head;
         head->prev = new_node;
         head = new_node;
-    } else if (nomor > tail->data){
+    } else if (nomor > tail->data) {
         tail->next = new_node;
         new_node->prev = tail;
         tail = new_node;
     } else {
         DNode *temp = head;
-        while (temp->next != nullptr and temp->next->data < nomor){
+        while (temp->next != nullptr && temp->next->data < nomor) {
             temp = temp->next;
         }
         
@@ -114,7 +117,9 @@ bool bukaHalaman(DNode*& head, DNode*& tail, int nomor) {
         new_node->next = node_depan;
         
         node_belakang->next = new_node;
-        node_depan->prev = new_node;
+        if (node_depan != nullptr) {
+            node_depan->prev = new_node;
+        }
     }
 
     return true;
